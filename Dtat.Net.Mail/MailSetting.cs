@@ -3,11 +3,18 @@
 	[System.Serializable]
 	public class MailSetting : object, IMailSetting
 	{
+		public const string KeyName = "MailSetting";
+
 		public MailSetting() : base()
 		{
+			Enabled = true;
 			SmtpClientPortNumber = 25;
 			SmtpClientTimeout = 100_000;
 		}
+
+		public bool Enabled { get; set; }
+
+
 
 		public int SmtpClientTimeout { get; set; }
 

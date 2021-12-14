@@ -2,6 +2,10 @@
 {
 	public interface IMailSetting
 	{
+		bool Enabled { get; set; }
+
+
+
 		int SmtpClientTimeout { get; set; }
 
 		int SmtpClientPortNumber { get; set; }

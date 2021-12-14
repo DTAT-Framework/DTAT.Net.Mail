@@ -143,6 +143,16 @@ namespace Dtat.Net.Mail
 
 					return result;
 				}
+				else
+				{
+					if(mailSetting.Enabled == false)
+					{
+						result.AddErrorMessage
+							(message: "Mail setting is disabled!");
+
+						return result;
+					}
+				}
 
 				mailSetting.FixValues();
 				// **************************************************
@@ -347,7 +357,7 @@ namespace Dtat.Net.Mail
 				// **************************************************
 
 				// **************************************************
-				mailMessage.Headers.Add("Dtat.Net.Mail_Version", "5.0.0");
+				mailMessage.Headers.Add("Dtat.Net.Mail_Version", "5.1.0");
 				mailMessage.Headers.Add("Dtat.Net.Mail_Url", "https://DTAT.ir");
 				mailMessage.Headers.Add("Dtat.Net.Mail_Author", "Mr. Dariush Tasdighi");
 				mailMessage.Headers.Add("Dtat.Net.Mail_Date", "1400/06/30 - 2021/09/21");
