@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
 
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
@@ -20,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Dtat.Net.Mail\Dtat.Net.Mail.csproj" />
+	  <ProjectReference Include="..\Dtat.Net.Mail\Dtat.Net.Mail.csproj" />
 	</ItemGroup>
 
 </Project>
