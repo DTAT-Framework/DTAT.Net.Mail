@@ -1,9 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<Nullable>enable</Nullable>
 		<TargetFramework>net6.0</TargetFramework>
+		<!--<ImplicitUsings>enable</ImplicitUsings>-->
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>5.1.0</Version>
+
+		<Version>5.1.1</Version>
 		<Authors>Mr. Dariush Tasdighi</Authors>
 		<Company>DTAT</Company>
 		<Description>This library is for sending email with SMTP Protocol</Description>
@@ -11,9 +14,9 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://DTAT.ir</PackageProjectUrl>
 		<PackageIcon>DTAT03.png</PackageIcon>
-		<PackageIconUrl />
 		<RepositoryUrl>https://github.com/DTAT-Framework/DTAT.Net.Mail</RepositoryUrl>
 		<PackageTags>DTAT,Net,Mail,Email,Smtp,Library,Framework</PackageTags>
+		<UserSecretsId>e00d3b8d-6d71-4b55-939c-cd6303d71748</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>

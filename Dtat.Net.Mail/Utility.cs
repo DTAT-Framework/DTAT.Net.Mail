@@ -22,9 +22,9 @@ namespace Dtat.Net.Mail
 
 			text =
 				text
-				.Replace(System.Convert.ToChar(13).ToString(), "<br />") // Return Key.
-				.Replace(System.Convert.ToChar(10).ToString(), string.Empty) // Return Key.
-				.Replace(System.Convert.ToChar(9).ToString(), "&nbsp;&nbsp;&nbsp;&nbsp;"); // TAB Key.
+				.Replace(oldValue: System.Convert.ToChar(13).ToString(), newValue: "<br />") // Return Key.
+				.Replace(oldValue: System.Convert.ToChar(10).ToString(), newValue: string.Empty) // Return Key.
+				.Replace(oldValue: System.Convert.ToChar(9).ToString(), newValue: "&nbsp;&nbsp;&nbsp;&nbsp;"); // TAB Key.
 
 			return text;
 		}
@@ -40,7 +40,7 @@ namespace Dtat.Net.Mail
 			(
 				string subject,
 				string body,
-				IMailSetting mailSetting = null
+				IMailSetting mailSetting
 			)
 		{
 			var result =
@@ -70,8 +70,8 @@ namespace Dtat.Net.Mail
 				System.Net.Mail.MailAddress recipient,
 				string subject,
 				string body,
-				System.Net.Mail.MailPriority priority,
-				IMailSetting mailSetting = null
+				IMailSetting mailSetting,
+				System.Net.Mail.MailPriority priority = System.Net.Mail.MailPriority.Normal
 			)
 		{
 			// **************************************************
@@ -80,7 +80,7 @@ namespace Dtat.Net.Mail
 
 			if (recipient != null)
 			{
-				recipients.Add(recipient);
+				recipients.Add(item: recipient);
 			}
 			// **************************************************
 
@@ -91,7 +91,7 @@ namespace Dtat.Net.Mail
 				body: body,
 				priority: priority,
 				attachmentPathNames: null,
-				deliveryNotification: System.Net.Mail.DeliveryNotificationOptions.Never,
+				deliveryNotification: System.Net.Mail.DeliveryNotificationOptions.None,
 				mailSetting: mailSetting);
 
 			return result;
@@ -111,14 +111,15 @@ namespace Dtat.Net.Mail
 		/// <returns></returns>
 		public static Results.Result Send
 			(
-				System.Net.Mail.MailAddress sender,
-				System.Net.Mail.MailAddressCollection recipients,
-				string subject,
-				string body,
-				System.Net.Mail.MailPriority priority,
-				System.Collections.Generic.List<string> attachmentPathNames,
-				System.Net.Mail.DeliveryNotificationOptions deliveryNotification,
-				IMailSetting mailSetting = null
+				System.Net.Mail.MailAddress? sender,
+				System.Net.Mail.MailAddressCollection? recipients,
+				string? subject,
+				string? body,
+				IMailSetting mailSetting,
+				System.Collections.Generic.List<string>? attachmentPathNames,
+				System.Net.Mail.DeliveryNotificationOptions
+					deliveryNotification = System.Net.Mail.DeliveryNotificationOptions.None,
+				System.Net.Mail.MailPriority priority = System.Net.Mail.MailPriority.Normal
 			)
 		{
 			// **************************************************
@@ -127,8 +128,8 @@ namespace Dtat.Net.Mail
 			// **************************************************
 
 			// **************************************************
-			System.Net.Mail.SmtpClient smtpClient = null;
-			System.Net.Mail.MailMessage mailMessage = null;
+			System.Net.Mail.SmtpClient? smtpClient = null;
+			System.Net.Mail.MailMessage? mailMessage = null;
 			// **************************************************
 
 			try
@@ -145,7 +146,7 @@ namespace Dtat.Net.Mail
 				}
 				else
 				{
-					if(mailSetting.Enabled == false)
+					if (mailSetting.Enabled == false)
 					{
 						result.AddErrorMessage
 							(message: "Mail setting is disabled!");
@@ -174,7 +175,8 @@ namespace Dtat.Net.Mail
 				// **************************************************
 				if (sender == null)
 				{
-					if (string.IsNullOrWhiteSpace(mailSetting.SenderEmailAddress))
+					if (string.IsNullOrWhiteSpace
+						(value: mailSetting.SenderEmailAddress))
 					{
 						string errorMessage =
 							$"{nameof(mailSetting.SenderEmailAddress)} is null!";
@@ -184,7 +186,8 @@ namespace Dtat.Net.Mail
 						return result;
 					}
 
-					if (string.IsNullOrEmpty(mailSetting.SenderDisplayName))
+					if (string.IsNullOrWhiteSpace
+						(value: mailSetting.SenderDisplayName))
 					{
 						sender =
 							new System.Net.Mail.MailAddress
@@ -208,7 +211,7 @@ namespace Dtat.Net.Mail
 				// Note: Below Code Obsoleted!
 				//mailMessage.ReplyTo = sender;
 
-				mailMessage.ReplyToList.Add(sender);
+				mailMessage.ReplyToList.Add(item: sender);
 				// **************************************************
 
 				// **************************************************
@@ -219,12 +222,13 @@ namespace Dtat.Net.Mail
 
 					foreach (var mailAddress in recipients)
 					{
-						mailMessage.To.Add(mailAddress);
+						mailMessage.To.Add(item: mailAddress);
 					}
 				}
 				else
 				{
-					if (string.IsNullOrWhiteSpace(mailSetting.SupportEmailAddress))
+					if (string.IsNullOrWhiteSpace
+						(value: mailSetting.SupportEmailAddress))
 					{
 						string errorMessage =
 							$"{nameof(mailSetting.SupportEmailAddress)} is null!";
@@ -234,9 +238,10 @@ namespace Dtat.Net.Mail
 						return result;
 					}
 
-					System.Net.Mail.MailAddress mailAddress = null;
+					System.Net.Mail.MailAddress? mailAddress = null;
 
-					if (string.IsNullOrEmpty(mailSetting.SupportDisplayName))
+					if (string.IsNullOrWhiteSpace
+						(value: mailSetting.SupportDisplayName))
 					{
 						mailAddress =
 							new System.Net.Mail.MailAddress
@@ -253,12 +258,13 @@ namespace Dtat.Net.Mail
 								displayNameEncoding: System.Text.Encoding.UTF8);
 					}
 
-					mailMessage.To.Add(mailAddress);
+					mailMessage.To.Add(item: mailAddress);
 				}
 				// **************************************************
 
 				// **************************************************
-				if (string.IsNullOrEmpty(mailSetting.BccAddresses) == false)
+				if (string.IsNullOrWhiteSpace
+					(value: mailSetting.BccAddresses) == false)
 				{
 					mailSetting.BccAddresses =
 						mailSetting.BccAddresses
@@ -267,23 +273,24 @@ namespace Dtat.Net.Mail
 						.Replace("|", ",")
 						.Replace("،", ",");
 
-					while (mailSetting.BccAddresses.Contains(",,"))
+					while (mailSetting.BccAddresses.Contains(value: ",,"))
 					{
 						mailSetting.BccAddresses =
-							mailSetting.BccAddresses.Replace(",,", ",");
+							mailSetting.BccAddresses.Replace(oldValue: ",,", newValue: ",");
 					}
 
 					var bccAddresses =
-						mailSetting.BccAddresses.Split(',').Distinct();
+						mailSetting.BccAddresses
+						.Split(separator: ',').Distinct();
 
 					foreach (var bccAddress in bccAddresses)
 					{
-						bool found =
+						bool founded =
 							mailMessage.To
 							.Where(current => string.Compare(current.Address, bccAddress, true) == 0)
 							.Any();
 
-						if (found == false)
+						if (founded == false)
 						{
 							var mailAddress =
 								new System.Net.Mail.MailAddress(address: bccAddress);
@@ -293,12 +300,12 @@ namespace Dtat.Net.Mail
 					}
 
 					// Note: [BccAddresses] must be separated with comma character (",")
-					//mailMessage.Bcc.Add(mailSetting.BccAddresses);
+					//mailMessage.Bcc.Add(item: mailSetting.BccAddresses);
 				}
 				// **************************************************
 
 				// **************************************************
-				if (string.IsNullOrEmpty(subject))
+				if (string.IsNullOrWhiteSpace(value: subject))
 				{
 					string errorMessage = $"Subject is null!";
 
@@ -309,19 +316,20 @@ namespace Dtat.Net.Mail
 
 				mailMessage.SubjectEncoding = System.Text.Encoding.UTF8;
 
-				if (string.IsNullOrEmpty(mailSetting.EmailSubjectTemplate))
+				if (string.IsNullOrWhiteSpace
+					(value: mailSetting.EmailSubjectTemplate))
 				{
 					mailMessage.Subject = subject;
 				}
 				else
 				{
 					mailMessage.Subject =
-						string.Format(mailSetting.EmailSubjectTemplate, subject);
+						string.Format(format: mailSetting.EmailSubjectTemplate, subject);
 				}
 				// **************************************************
 
 				// **************************************************
-				if (string.IsNullOrEmpty(body))
+				if (string.IsNullOrWhiteSpace(value: body))
 				{
 					string errorMessage = $"Body is null!";
 
@@ -345,22 +353,22 @@ namespace Dtat.Net.Mail
 				{
 					foreach (var attachmentPathName in attachmentPathNames)
 					{
-						if (System.IO.File.Exists(attachmentPathName))
+						if (System.IO.File.Exists(path: attachmentPathName))
 						{
-							var attachment =
-								new System.Net.Mail.Attachment(attachmentPathName);
+							var attachment = new System.Net.Mail
+								.Attachment(fileName: attachmentPathName);
 
-							mailMessage.Attachments.Add(attachment);
+							mailMessage.Attachments.Add(item: attachment);
 						}
 					}
 				}
 				// **************************************************
 
 				// **************************************************
-				mailMessage.Headers.Add("Dtat.Net.Mail_Version", "5.1.0");
-				mailMessage.Headers.Add("Dtat.Net.Mail_Url", "https://DTAT.ir");
-				mailMessage.Headers.Add("Dtat.Net.Mail_Author", "Mr. Dariush Tasdighi");
-				mailMessage.Headers.Add("Dtat.Net.Mail_Date", "1400/06/30 - 2021/09/21");
+				mailMessage.Headers.Add(name: "Dtat.Net.Mail_Version", value: "5.1.1");
+				mailMessage.Headers.Add(name: "Dtat.Net.Mail_Url", value: "https://DTAT.ir");
+				mailMessage.Headers.Add(name: "Dtat.Net.Mail_Author", value: "Mr. Dariush Tasdighi");
+				mailMessage.Headers.Add(name: "Dtat.Net.Mail_Date", value: "1401/06/28 - 2022/09/19");
 				// **************************************************
 				// *** /Mail Message Configuration ******************
 				// **************************************************
@@ -368,7 +376,8 @@ namespace Dtat.Net.Mail
 				// **************************************************
 				// *** Smtp Client Configuration ********************
 				// **************************************************
-				if (string.IsNullOrEmpty(mailSetting.SmtpClientHostAddress))
+				if (string.IsNullOrWhiteSpace
+					(value: mailSetting.SmtpClientHostAddress))
 				{
 					string errorMessage =
 						$"{nameof(mailSetting.SmtpClientHostAddress)} is null!";
@@ -425,7 +434,7 @@ namespace Dtat.Net.Mail
 
 				if (mailSetting.UseDefaultCredentials == false)
 				{
-					if (string.IsNullOrEmpty(mailSetting.SmtpUsername))
+					if (string.IsNullOrWhiteSpace(value: mailSetting.SmtpUsername))
 					{
 						string errorMessage =
 							$"{nameof(mailSetting.SmtpUsername)} is null!";
@@ -451,7 +460,15 @@ namespace Dtat.Net.Mail
 			}
 			catch (System.Exception ex)
 			{
-				result.AddErrorMessage(message: ex.Message);
+				var exception = ex;
+
+				while (exception != null)
+				{
+					result.AddErrorMessage(message: exception.Message);
+
+					exception =
+						exception.InnerException;
+				}
 			}
 			finally
 			{

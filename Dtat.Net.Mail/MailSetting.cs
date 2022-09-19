@@ -22,33 +22,33 @@
 
 		public bool SmtpClientSslEnabled { get; set; }
 
-		public string SmtpClientHostAddress { get; set; }
+		public string? SmtpClientHostAddress { get; set; }
 
 
 
-		public string SmtpUsername { get; set; }
+		public string? SmtpUsername { get; set; }
 
-		public string SmtpPassword { get; set; }
+		public string? SmtpPassword { get; set; }
 
 		public bool UseDefaultCredentials { get; set; }
 
 
 
-		public string SenderDisplayName { get; set; }
+		public string? SenderDisplayName { get; set; }
 
-		public string SenderEmailAddress { get; set; }
-
-
-
-		public string SupportDisplayName { get; set; }
-
-		public string SupportEmailAddress { get; set; }
+		public string? SenderEmailAddress { get; set; }
 
 
 
-		public string BccAddresses { get; set; }
+		public string? SupportDisplayName { get; set; }
 
-		public string EmailSubjectTemplate { get; set; }
+		public string? SupportEmailAddress { get; set; }
+
+
+
+		public string? BccAddresses { get; set; }
+
+		public string? EmailSubjectTemplate { get; set; }
 
 		/// <summary>
 		/// اصلاح تمام فیلدهای متنی تنظیمات ایمیل
@@ -56,18 +56,32 @@
 		/// <param name="mailSetting">تنظیمات ایمیل</param>
 		public void FixValues()
 		{
-			SenderDisplayName = String.Fix(SenderDisplayName);
-			SenderEmailAddress = String.Fix(SenderEmailAddress);
+			SenderDisplayName =
+				String.Fix(text: SenderDisplayName);
 
-			SupportDisplayName = String.Fix(SupportDisplayName);
-			SupportEmailAddress = String.Fix(SupportEmailAddress);
+			SenderEmailAddress =
+				String.Fix(text: SenderEmailAddress);
 
-			BccAddresses = String.Fix(BccAddresses);
-			EmailSubjectTemplate = String.Fix(EmailSubjectTemplate);
+			SupportDisplayName =
+				String.Fix(text: SupportDisplayName);
 
-			SmtpPassword = String.Fix(SmtpPassword);
-			SmtpUsername = String.Fix(SmtpUsername);
-			SmtpClientHostAddress = String.Fix(SmtpClientHostAddress);
+			SupportEmailAddress =
+				String.Fix(text: SupportEmailAddress);
+
+			BccAddresses =
+				String.Fix(text: BccAddresses);
+
+			EmailSubjectTemplate =
+				String.Fix(text: EmailSubjectTemplate);
+
+			SmtpPassword =
+				String.Fix(text: SmtpPassword);
+
+			SmtpUsername =
+				String.Fix(text: SmtpUsername);
+
+			SmtpClientHostAddress =
+				String.Fix(text: SmtpClientHostAddress);
 		}
 	}
 }
