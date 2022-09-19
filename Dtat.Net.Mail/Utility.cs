@@ -40,7 +40,8 @@ namespace Dtat.Net.Mail
 			(
 				string subject,
 				string body,
-				IMailSetting mailSetting
+				IMailSetting mailSetting,
+				System.Net.Mail.MailPriority priority = System.Net.Mail.MailPriority.High
 			)
 		{
 			var result =
@@ -48,9 +49,9 @@ namespace Dtat.Net.Mail
 				recipients: null,
 				subject: subject,
 				body: body,
-				priority: System.Net.Mail.MailPriority.High,
+				priority: priority,
 				attachmentPathNames: null,
-				deliveryNotification: System.Net.Mail.DeliveryNotificationOptions.Never,
+				deliveryNotification: System.Net.Mail.DeliveryNotificationOptions.None,
 				mailSetting: mailSetting);
 
 			return result;
@@ -116,10 +117,10 @@ namespace Dtat.Net.Mail
 				string? subject,
 				string? body,
 				IMailSetting mailSetting,
-				System.Collections.Generic.List<string>? attachmentPathNames,
+				System.Net.Mail.MailPriority priority = System.Net.Mail.MailPriority.Normal,
 				System.Net.Mail.DeliveryNotificationOptions
 					deliveryNotification = System.Net.Mail.DeliveryNotificationOptions.None,
-				System.Net.Mail.MailPriority priority = System.Net.Mail.MailPriority.Normal
+				System.Collections.Generic.List<string>? attachmentPathNames = null
 			)
 		{
 			// **************************************************
@@ -365,7 +366,7 @@ namespace Dtat.Net.Mail
 				// **************************************************
 
 				// **************************************************
-				mailMessage.Headers.Add(name: "Dtat.Net.Mail_Version", value: "5.1.1");
+				mailMessage.Headers.Add(name: "Dtat.Net.Mail_Version", value: "5.1.2");
 				mailMessage.Headers.Add(name: "Dtat.Net.Mail_Url", value: "https://DTAT.ir");
 				mailMessage.Headers.Add(name: "Dtat.Net.Mail_Author", value: "Mr. Dariush Tasdighi");
 				mailMessage.Headers.Add(name: "Dtat.Net.Mail_Date", value: "1401/06/28 - 2022/09/19");

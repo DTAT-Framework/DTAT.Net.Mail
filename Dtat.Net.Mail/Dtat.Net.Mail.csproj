@@ -6,7 +6,7 @@
 		<!--<ImplicitUsings>enable</ImplicitUsings>-->
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-		<Version>5.1.1</Version>
+		<Version>5.1.2</Version>
 		<Authors>Mr. Dariush Tasdighi</Authors>
 		<Company>DTAT</Company>
 		<Description>This library is for sending email with SMTP Protocol</Description>
